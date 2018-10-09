@@ -3,7 +3,7 @@
  * @license MIT
  * @author Ayon Lee <i@hyurl.com>
  * @copyright 2018
- * @description Let classes support magic methods in JavaScript based on ES6 Proxy.
+ * @description Lets classes support magic methods in JavaScript based on ES6 Proxy.
  * @namespace magic
  */
 "use strict";
