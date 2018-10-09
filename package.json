@@ -1,0 +1,30 @@
+{
+  "name": "js-magic",
+  "version": "1.0.0",
+  "description": "Lets classes support magic methods in JavaScript based on ES6 Proxy.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyurl/js-magic.git"
+  },
+  "keywords": [
+    "Magic Methods",
+    "getter",
+    "setter"
+  ],
+  "author": "Ayon Lee <i@hyurl.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyurl/js-magic/issues"
+  },
+  "homepage": "https://github.com/hyurl/js-magic#readme",
+  "devDependencies": {
+    "@types/node": "^10.11.5",
+    "mocha": "^5.2.0",
+    "tslib": "^1.9.3"
+  }
+}
