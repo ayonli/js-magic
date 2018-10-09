@@ -43,13 +43,13 @@ export class Car implements MagicalClass {
      * if the property is 'name', returns it according to the class name plus 
      * 'Instance'. 
      */
-    protected __get(prop: string | symbol): any {
+    __get(prop: string | symbol): any {
         return prop in this ? this[prop]
             : (prop == "name" ? this.constructor.name + " Instance" : null);
     }
 
     /** If the property is name, appends it with 'Instance'. */
-    protected __set(prop: string | symbol, value: any): void {
+    __set(prop: string | symbol, value: any): void {
         this[prop] = prop == "name" ? value + " Instance" : value;
     }
 
@@ -57,13 +57,13 @@ export class Car implements MagicalClass {
      * Ignores the properties starts with '__', and always returns `true` when 
      * testing 'name'.
      */
-    protected __has(prop: string | symbol): boolean {
+    __has(prop: string | symbol): boolean {
         return (typeof prop != "string" || prop.slice(0, 2) != "__")
             && (prop in this || prop == "name");
     }
 
     /** If the property starts with '__' or is 'name', DO NOT delete. */
-    protected __delete(prop: string | symbol): void {
+    __delete(prop: string | symbol): void {
         if (prop.slice(0, 2) == "__" || prop == "name") return;
         delete this[prop];
     }
@@ -75,7 +75,7 @@ export class Car implements MagicalClass {
      * you CAN. But remember, it is called as a pure function, means the `this` 
      * variable is not set.
      */
-    protected __invoke(...args: any[]): any {
+    __invoke(...args: any[]): any {
         return "invoking Car as a function";
     }
 }
@@ -117,9 +117,7 @@ via `super` keyword.
 
 This package also provides symbols according to the magic method names (`__get`, 
 `__set`, `__has`, `__delete`, `__invoke`), you can use them if you want to hide 
-the methods from IDE IntelliSence, but gernally they are not common used. And 
-you've already seen that in the example all the magic methods are defined as 
-`protected`, so they will not be seen outside the class and its siblings.
+the methods from IDE IntelliSence, but gernally they are not common used.
 
 ## Supported Environments
 

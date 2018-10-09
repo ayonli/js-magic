@@ -8,11 +8,11 @@ declare namespace magic {
     function applyMagic<T extends Function>(Class: T): T;
 
     interface MagicalClass {
-        protected __get?(prop: string | symbol): any;
-        protected __set?(prop: string | symbol, value: any): void;
-        protected __has?(prop: string | symbol): boolean;
-        protected __delete?(prop: string | symbol): void;
-        protected __invoke?(...args: any[]): any;
+        __get?(prop: string | symbol): any;
+        __set?(prop: string | symbol, value: any): void;
+        __has?(prop: string | symbol): boolean;
+        __delete?(prop: string | symbol): void;
+        __invoke?(...args: any[]): any;
     }
 }
 
