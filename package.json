@@ -1,7 +1,7 @@
 {
   "name": "js-magic",
   "version": "1.1.0",
-  "description": "Lets classes support magic methods in JavaScript based on ES6 Proxy.",
+  "description": "Allow classes support magic methods in JavaScript based on ES6 Proxy.",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {

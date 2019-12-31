@@ -1,9 +1,10 @@
+/* global window, define */
 /**
  * @package
  * @license MIT
  * @author Ayon Lee <i@hyurl.com>
- * @copyright 2018
- * @description Lets classes support magic methods in JavaScript based on ES6 Proxy.
+ * @copyright 2020
+ * @description Allow classes support magic methods in JavaScript based on ES6 Proxy.
  * @namespace magic
  */
 "use strict";
@@ -25,9 +26,14 @@
     function checkType(constructor, fn, name, argLength) {
         if (fn !== undefined) {
             if (typeof fn != "function") {
-                throw new TypeError(`Magic method ${constructor.name}.${name} must be defined as a function`);
+                throw new TypeError(
+                    `${constructor.name}.${name} must be a function`
+                );
             } else if (argLength !== undefined && fn.length !== argLength) {
-                throw new SyntaxError(`Magic method ${constructor.name}.${name} must have ${argLength} parameter${argLength === 1 ? "" : "s"}`);
+                throw new SyntaxError(
+                    `${constructor.name}.${name} must have ` +
+                    `${argLength} parameter${argLength === 1 ? "" : "s"}`
+                );
             }
         }
     }
@@ -86,7 +92,7 @@
                 return proxify(target);
             }
 
-            function PsudoClass(...args) {
+            function PseudoClass(...args) {
                 if (typeof this == "undefined") { // function call
                     let proto = target.prototype,
                         invoke = proto[__invoke] || proto.__invoke;
@@ -100,17 +106,17 @@
                 }
             }
 
-            Object.setPrototypeOf(PsudoClass, target);
-            Object.setPrototypeOf(PsudoClass.prototype, target.prototype);
+            Object.setPrototypeOf(PseudoClass, target);
+            Object.setPrototypeOf(PseudoClass.prototype, target.prototype);
 
-            setProp(PsudoClass, "name", target.name);
-            setProp(PsudoClass, "length", target.length);
-            setProp(PsudoClass, "toString", function toString() {
-                let obj = this === PsudoClass ? target : this;
+            setProp(PseudoClass, "name", target.name);
+            setProp(PseudoClass, "length", target.length);
+            setProp(PseudoClass, "toString", function toString() {
+                let obj = this === PseudoClass ? target : this;
                 return Function.prototype.toString.call(obj);
             }, true);
 
-            return PsudoClass;
+            return PseudoClass;
         } else if (typeof target === "object") {
             return proxify(target);
         } else {

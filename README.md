@@ -1,15 +1,15 @@
 # JS-Magic
 
-**Lets classes support magic methods in JavaScript based on ES6 `Proxy`.**
+**Allow classes support magic methods in JavaScript based on ES6 Proxy.**
 
-We know that ES6 brings the capablity of Proxy that allows us observing an 
+We know that ES6 brings the capability of Proxy that allows us observing an 
 object, and setters ang getters are build-in support in JavaScript, but if we 
-need to build those things every time, that's just mass and pain. With this 
-package, you can define setters and getters, along with other funcitons, right 
-in the class difinition itself, and when you instantiate the class, the instance
-will always have the the benifits of the magical calling functionalities.
+need to build those things every time, that's just mess and pain. With this 
+package, you can define setters and getters, along with other functions, right 
+in the class definition itself, and when instantiating the class, the instance
+will always have the the benefits of the magical calling functionalities.
 
-This package is inspired by PHP magic methods, it currectly support sthese migic 
+This package is inspired by PHP magic methods, and currently supports these 
 methods: `__get`, `__set`, `__has`, `__delete`, `__invoke`. Other methods like 
 `toString` and `toJSON` are built-in support in JavaScript.
 
@@ -22,7 +22,7 @@ npm i js-magic
 ## Example
 
 ```typescript
-// this example is coded in TypeScript, be aware of the difference between TS 
+// This example is coded in TypeScript, be aware of the difference between TS 
 // and JS. All the magic methods are optional, but here I'll show all the usage 
 // of them.
 
@@ -83,12 +83,12 @@ export class Car implements MagicalClass {
 
 ## How It Works?
 
-The decorator `applyMagic` is a function that returns a highly-comstomized ES5 
-psudo-class, it will replace the original class, so that when instantiating, the 
-magic methods will be auto-applied to the instance wrapped by a `Proxy`. Since 
-`applyMagic` is a function, so if you're coding in JavaScript without decorator
-support, you can manually call it to generate the wrapping class and assign to 
-the old one. Like this:
+The decorator `applyMagic` is a function that returns a highly-customized ES5 
+pseudo-class, it will replace the original class, so that when instantiating,
+the  magic methods will be auto-applied to the instance wrapped by a `Proxy`.
+Since `applyMagic` is a function, so if you're coding in JavaScript without
+decorator support, you can manually call it to generate the wrapping class and
+assign to the old one. Like this:
 
 ```javascript
 const { applyMagic } = require("js-magic");
@@ -100,18 +100,14 @@ class Car {
 Car = applyMagic(Car);
 ```
 
-Since the returns class is wrapped in ES5 style, so that it allows you calling 
-as a function, which the `__invoke` method will take place.
+Since the returned class is wrapped in ES5 style, so that it allows you calling 
+it as a function, where the `__invoke` method will called under the hood.
 
 ## Support of Inheritance
 
 This package also supports native inheritance, allows you inheriting the magical
-calling functionalities from a super class to sub-classes. BUT, unless you also
-decorate with (or manually call) `applyMagic` on the sub-class, otherwise 
-the `__invoke` method will never be performed on that sub-class.
-
-Also you can rewrite the magic methods in the sub-class, and call the super's 
-via `super` keyword.
+calling functionalities from a super class to sub-classes. Also you can rewrite
+the magic methods in the sub-class, and call the super's via `super` keyword.
 
 ## Support of Objects Other Than Class
 
@@ -125,11 +121,11 @@ feature be apply to a function, you can pass the second argument `proxyOnly` to
 
 This package also provides symbols according to the magic method names (`__get`, 
 `__set`, `__has`, `__delete`, `__invoke`), you can use them if you want to hide 
-the methods from IDE IntelliSence, but gernally they are not common used.
+the methods from IDE IntelliSense, but generally they are not common used.
 
 ## Supported Environments
 
-Any environment that supports ES6 `Proxy` will run this package perfectly, 
+Any environment that supports ES6 `Proxy` will work with this package perfectly, 
 generally, NodeJS `6.0+` and modern browsers (`IE` aside) should support `Proxy`
 already.
 
