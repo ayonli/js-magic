@@ -113,6 +113,14 @@ the `__invoke` method will never be performed on that sub-class.
 Also you can rewrite the magic methods in the sub-class, and call the super's 
 via `super` keyword.
 
+## Support of Objects Other Than Class
+
+Since v1.1, this package also supports other objects other than class, if
+calling `applyMagic` on a non-function object, it will returns a proxy of the
+original object that supports magic functions. Moreover, if you want this
+feature be apply to a function, you can pass the second argument `proxyOnly` to
+`applyMagic`, and it will not treat the function as a potential class. 
+
 ## Additional Symbols
 
 This package also provides symbols according to the magic method names (`__get`, 

@@ -47,62 +47,75 @@
         });
     }
 
-    /**
-     * @param {Function} constructor
-     * @returns {Function}
-     */
-    function applyMagic(constructor) {
-        function PsudoClass(...args) {
-            if (typeof this == "undefined") { // function call
-                let proto = constructor.prototype,
-                    invoke = proto[__invoke] || proto.__invoke;
+    function proxify(target) {
+        let get = target[__get] || target.__get,
+            set = target[__set] || target.__set,
+            has = target[__has] || target.__has,
+            _delete = target[__delete] || target.__delete;
 
-                checkType(constructor, invoke, "__invoke");
+        checkType(new.target, get, "__get", 1);
+        checkType(new.target, set, "__set", 2);
+        checkType(new.target, has, "__has", 1);
+        checkType(new.target, _delete, "__delete", 1);
 
-                return invoke ? invoke(...args) : constructor(...args);
-            } else {
-                Object.assign(this, new constructor(...args));
-
-                let get = this[__get] || this.__get,
-                    set = this[__set] || this.__set,
-                    has = this[__has] || this.__has,
-                    _delete = this[__delete] || this.__delete;
-
-                checkType(new.target, get, "__get", 1);
-                checkType(new.target, set, "__set", 2);
-                checkType(new.target, has, "__has", 1);
-                checkType(new.target, _delete, "__delete", 1);
-
-                return new Proxy(this, {
-                    get: (target, prop) => {
-                        return get ? get.call(target, prop) : target[prop];
-                    },
-                    set: (target, prop, value) => {
-                        set ? set.call(target, prop, value) : (target[prop] = value);
-                        return true;
-                    },
-                    has: (target, prop) => {
-                        return has ? has.call(target, prop) : (prop in target);
-                    },
-                    deleteProperty: (target, prop) => {
-                        _delete ? _delete.call(target, prop) : (delete target[prop]);
-                        return true;
-                    }
-                });
+        return new Proxy(target, {
+            get: (target, prop) => {
+                return get ? get.call(target, prop) : target[prop];
+            },
+            set: (target, prop, value) => {
+                set ? set.call(target, prop, value) : (target[prop] = value);
+                return true;
+            },
+            has: (target, prop) => {
+                return has ? has.call(target, prop) : (prop in target);
+            },
+            deleteProperty: (target, prop) => {
+                _delete ? _delete.call(target, prop) : (delete target[prop]);
+                return true;
             }
+        });
+    }
+
+    /**
+     * @param {Function|object} target
+     * @returns {Function|object}
+     */
+    function applyMagic(target, proxyOnly = false) {
+        if (typeof target == "function") {
+            if (proxyOnly) {
+                return proxify(target);
+            }
+
+            function PsudoClass(...args) {
+                if (typeof this == "undefined") { // function call
+                    let proto = target.prototype,
+                        invoke = proto[__invoke] || proto.__invoke;
+
+                    checkType(target, invoke, "__invoke");
+
+                    return invoke ? invoke(...args) : target(...args);
+                } else {
+                    Object.assign(this, new target(...args));
+                    return proxify(this);
+                }
+            }
+
+            Object.setPrototypeOf(PsudoClass, target);
+            Object.setPrototypeOf(PsudoClass.prototype, target.prototype);
+
+            setProp(PsudoClass, "name", target.name);
+            setProp(PsudoClass, "length", target.length);
+            setProp(PsudoClass, "toString", function toString() {
+                let obj = this === PsudoClass ? target : this;
+                return Function.prototype.toString.call(obj);
+            }, true);
+
+            return PsudoClass;
+        } else if (typeof target === "object") {
+            return proxify(target);
+        } else {
+            throw new TypeError("'target' must be a function or an object");
         }
-
-        Object.setPrototypeOf(PsudoClass, constructor);
-        Object.setPrototypeOf(PsudoClass.prototype, constructor.prototype);
-
-        setProp(PsudoClass, "name", constructor.name);
-        setProp(PsudoClass, "length", constructor.length);
-        setProp(PsudoClass, "toString", function toString() {
-            let target = this === PsudoClass ? constructor : this;
-            return Function.prototype.toString.call(target);
-        }, true);
-
-        return PsudoClass;
     }
 
     const magic = {

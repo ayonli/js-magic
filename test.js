@@ -1,3 +1,4 @@
+/* global describe, it */
 const assert = require("assert");
 const magic = require(".");
 
@@ -32,7 +33,7 @@ class Car {
     }
 }
 
-describe("applying magic methods to the class", () => {
+describe("applying magic methods to class", () => {
     it("should generate a proxy class looks exactly like the original one", () => {
         let _Car = magic.applyMagic(Car);
         assert.equal(_Car.name, Car.name);
@@ -86,7 +87,7 @@ describe("applying magic methods to the class", () => {
     });
 });
 
-describe("class inheritance of a magical class", () => {
+describe("class inheritance of magical class", () => {
     let _Car = magic.applyMagic(Car);
 
     it("should define an ES6 class extends the magical class as expected", () => {
@@ -120,7 +121,7 @@ describe("class inheritance of a magical class", () => {
 
         Object.setPrototypeOf(Auto, _Car);
         Object.setPrototypeOf(Auto.prototype, _Car.prototype);
-        
+
         assert.equal(Auto.name, "Auto");
         assert.equal(Auto.length, 0);
         assert.equal(Auto.toString(), classStr);
@@ -136,6 +137,27 @@ describe("class inheritance of a magical class", () => {
         assert.equal(auto.name, "MyAuto Instance");
         assert.strictEqual(auto.windows, 4);
         assert.equal(auto.test("Hello, World!"), "Hello, World!");
-        console.log(Auto());
+    });
+});
+
+describe("apply magic functions on objects other than class", () => {
+    it("should apply magic functions on an object as expected", () => {
+        let obj = magic.applyMagic({
+            __get(prop) {
+                return "bar";
+            }
+        });
+
+        assert.strictEqual(obj.foo, "bar");
+    });
+
+    it("should apply magic functions on a function as expected", () => {
+        let fn = new Function();
+        fn["__get"] = (prop) => {
+            return prop === "name" ? "fn" : prop in fn ? fn[prop] : void 0;
+        };
+        fn = magic.applyMagic(fn, true);
+
+        assert.strictEqual(fn.name, "fn");
     });
 });
