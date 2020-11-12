@@ -72,10 +72,12 @@ export class Car implements MagicalClass {
      * This method will be called when the class is invoked as a function. You 
      * may be a little confused since being told that ES6 class cannot be called
      * as function, AKA without `new` operator, well, when using this package, 
-     * you CAN. But remember, it is called as a pure function, means the `this` 
-     * variable is not set.
+     * you CAN.
+     * 
+     * NOTE: prior to v1.2, __invoke without `static` modifier is permitted, but
+     * it's now deprecated, always add `static` instead.
      */
-    __invoke(...args: any[]): any {
+    static __invoke(...args: any[]): any {
         return "invoking Car as a function";
     }
 }
@@ -108,6 +110,9 @@ it as a function, where the `__invoke` method will called under the hood.
 This package also supports native inheritance, allows you inheriting the magical
 calling functionalities from a super class to sub-classes. Also you can rewrite
 the magic methods in the sub-class, and call the super's via `super` keyword.
+
+NOTE: this feature DOESN'T work with `__invoke`, unless using `applyMagic` on
+the sub-class as well.
 
 ## Support of Objects Other Than Class
 

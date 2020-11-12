@@ -16,6 +16,8 @@
     const __delete = Symbol("__delete");
     const __invoke = Symbol("__invoke");
 
+    let warnedInvokeDeprecation = false;
+
     /**
      * @param {Function} constructor 
      * @param {Function} fn 
@@ -94,8 +96,24 @@
 
             function PseudoClass(...args) {
                 if (typeof this == "undefined") { // function call
-                    let proto = target.prototype,
-                        invoke = proto[__invoke] || proto.__invoke;
+                    let invoke = target[__invoke] || target.__invoke;
+
+                    if (invoke) { // use static __invoke
+                        checkType(target, invoke, "__invoke");
+
+                        return invoke
+                            ? invoke.apply(target, args)
+                            : target(...args);
+                    }
+
+                    let proto = target.prototype;
+                    invoke = proto[__invoke] || proto.__invoke;
+
+                    if (invoke && !warnedInvokeDeprecation) {
+                        warnedInvokeDeprecation = true;
+                        console.warn(
+                            "applyMagic: using __invoke without 'static' modifier is deprecated");
+                    }
 
                     checkType(target, invoke, "__invoke");
 

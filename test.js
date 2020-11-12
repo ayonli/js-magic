@@ -33,17 +33,23 @@ class Car {
     }
 }
 
+class Car2 {
+    static __invoke() {
+        return `invoking ${this.name} as a function`;
+    }
+}
+
 describe("applying magic methods to class", () => {
     it("should generate a proxy class looks exactly like the original one", () => {
         let _Car = magic.applyMagic(Car);
-        assert.equal(_Car.name, Car.name);
-        assert.equal(_Car.length, Car.length);
-        assert.equal(_Car.toString(), Car.toString());
+        assert.strictEqual(_Car.name, Car.name);
+        assert.strictEqual(_Car.length, Car.length);
+        assert.strictEqual(_Car.toString(), Car.toString());
         assert.strictEqual(_Car.prototype instanceof Car, true);
         var car = new _Car(4);
         assert.strictEqual(car instanceof Car, true);
         assert.strictEqual(car.wheels, 4);
-        assert.equal(car.test("Hello, World!"), "Hello, World!");
+        assert.strictEqual(car.test("Hello, World!"), "Hello, World!");
     });
 
     it("should apply __get method as expected", () => {
@@ -83,7 +89,12 @@ describe("applying magic methods to class", () => {
 
     it("should apply __invoke method as expected", () => {
         let _Car = magic.applyMagic(Car);
-        assert.equal(_Car(), "invoking Car as a function");
+        assert.strictEqual(_Car(), "invoking Car as a function");
+    });
+
+    it("should apply static __invoke method as expected", () => {
+        let _Car2 = magic.applyMagic(Car2);
+        assert.strictEqual(_Car2(), "invoking Car2 as a function");
     });
 });
 
@@ -95,9 +106,9 @@ describe("class inheritance of magical class", () => {
 
         let classStr = Auto.toString();
 
-        assert.equal(Auto.name, "Auto");
-        assert.equal(Auto.length, 0);
-        assert.equal(Auto.toString(), classStr);
+        assert.strictEqual(Auto.name, "Auto");
+        assert.strictEqual(Auto.length, 0);
+        assert.strictEqual(Auto.toString(), classStr);
         var auto = new Auto(4);
         assert.strictEqual(auto instanceof Car, true);
         assert.deepEqual(auto.name, "Auto Instance");
@@ -107,9 +118,9 @@ describe("class inheritance of magical class", () => {
         assert.strictEqual("windows" in auto, false);
         auto.name = "MyAuto";
         auto.windows = 4;
-        assert.equal(auto.name, "MyAuto Instance");
+        assert.strictEqual(auto.name, "MyAuto Instance");
         assert.strictEqual(auto.windows, 4);
-        assert.equal(auto.test("Hello, World!"), "Hello, World!");
+        assert.strictEqual(auto.test("Hello, World!"), "Hello, World!");
     });
 
     it("should define an ES5 class extends the magical class as expected", () => {
@@ -122,9 +133,9 @@ describe("class inheritance of magical class", () => {
         Object.setPrototypeOf(Auto, _Car);
         Object.setPrototypeOf(Auto.prototype, _Car.prototype);
 
-        assert.equal(Auto.name, "Auto");
-        assert.equal(Auto.length, 0);
-        assert.equal(Auto.toString(), classStr);
+        assert.strictEqual(Auto.name, "Auto");
+        assert.strictEqual(Auto.length, 0);
+        assert.strictEqual(Auto.toString(), classStr);
         var auto = new Auto(4);
         assert.strictEqual(auto instanceof Car, true);
         assert.deepEqual(auto.name, "Auto Instance");
@@ -134,9 +145,9 @@ describe("class inheritance of magical class", () => {
         assert.strictEqual("windows" in auto, false);
         auto.name = "MyAuto";
         auto.windows = 4;
-        assert.equal(auto.name, "MyAuto Instance");
+        assert.strictEqual(auto.name, "MyAuto Instance");
         assert.strictEqual(auto.windows, 4);
-        assert.equal(auto.test("Hello, World!"), "Hello, World!");
+        assert.strictEqual(auto.test("Hello, World!"), "Hello, World!");
     });
 });
 
