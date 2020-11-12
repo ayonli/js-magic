@@ -14,7 +14,7 @@ declare namespace magic {
         __set?(prop: string | symbol, value: any): void;
         __has?(prop: string | symbol): boolean;
         __delete?(prop: string | symbol): void;
-        __invoke?(...args: any[]): any;
+        static __invoke?(...args: any[]): any;
     }
 }
 
