@@ -141,8 +141,8 @@ the methods from IDE IntelliSense, but generally they are not common used.
 ## Supported Environments
 
 Any environment that supports ES6 `Proxy` will work with this package perfectly, 
-generally, NodeJS `6.0+` and modern browsers (`IE` aside) should support `Proxy`
-already.
+generally, NodeJS `6.0+`, Deno and modern browsers (`IE` aside) should support
+`Proxy` already.
 
 In browsers, if you're not using any module resolution, access the global 
 variable `window.magic` instead.
