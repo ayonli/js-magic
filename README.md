@@ -1,6 +1,6 @@
 # JS-Magic
 
-**Allow classes support magic methods in JavaScript based on ES6 Proxy.**
+**JavaScript magic methods support.**
 
 We know that ES6 brings the capability of Proxy that allows us observing an 
 object, and setters ang getters are build-in support in JavaScript, but if we 
@@ -17,6 +17,16 @@ methods: `__get`, `__set`, `__has`, `__delete`, `__invoke`. Other methods like
 
 ```sh
 npm i js-magic
+```
+
+### In Deno
+
+Just import this package directly:
+
+```ts
+import { applyMagic } from "https://deno.land/x/js_magic/index.ts";
+// Or
+import { applyMagic } from "https://github.com/hyurl/js-magic/raw/master/index.ts";
 ```
 
 ## Example

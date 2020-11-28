@@ -2,3 +2,4 @@
 node_modules/
 package-locak.json
 test.js
+index.ts
