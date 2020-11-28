@@ -18,13 +18,13 @@ let warnedInvokeDeprecation = false;
 export function applyMagic<T extends new (...args: any[]) => any>(ctor: T): T;
 export function applyMagic<T extends (...args: any[]) => any>(fn: T, proxyOnly: boolean): T;
 export function applyMagic<T extends object>(obj: T): T;
-export function applyMagic(target: object | Function, proxyOnly = false) {
+export function applyMagic(target: any, proxyOnly = false) {
     if (typeof target == "function") {
         if (proxyOnly) {
             return proxify(target);
         }
 
-        const PseudoClass = function PseudoClass(...args: any[]) {
+        const PseudoClass = function PseudoClass(this: any, ...args: any[]) {
             if (typeof this == "undefined") { // function call
                 let invoke = target[__invoke] || target["__invoke"];
 
@@ -59,7 +59,7 @@ export function applyMagic(target: object | Function, proxyOnly = false) {
 
         setProp(PseudoClass, "name", target.name);
         setProp(PseudoClass, "length", target.length);
-        setProp(PseudoClass, "toString", function toString() {
+        setProp(PseudoClass, "toString", function toString(this: any) {
             let obj = this === PseudoClass ? target : this;
             return Function.prototype.toString.call(obj);
         }, true);

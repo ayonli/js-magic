@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --module commonjs --target es2015 --sourceMap true --declaration true index.ts",
     "prepublishOnly": "npm run build",
-    "postpublish": "ls index(.d.ts|.js*) | xargs rm -f",
+    "postpublish": "ls index.* | grep -v index.ts | xargs rm -f",
+    "posttest": "npm run postpublish",
     "test": "mocha"
   },
   "engines": {
