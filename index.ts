@@ -72,7 +72,12 @@ export function applyMagic(target: any, proxyOnly = false) {
     }
 }
 
-function checkType(ctor: Function, fn: Function, name: string, argLength = 0) {
+function checkType(
+    ctor: Function,
+    fn: Function,
+    name: string,
+    argLength: number = void 0
+) {
     if (fn !== undefined) {
         if (typeof fn != "function") {
             throw new TypeError(
