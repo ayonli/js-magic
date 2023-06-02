@@ -1,6 +1,6 @@
 {
   "name": "js-magic",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "JavaScript magic methods support.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,19 +17,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hyurl/js-magic.git"
+    "url": "git+https://github.com/ayonli/js-magic.git"
   },
   "keywords": [
     "Magic Methods",
     "getter",
     "setter"
   ],
-  "author": "A-yon Lee <i@hyurl.com>",
+  "author": "A-yon Lee <the@ayon.li>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hyurl/js-magic/issues"
+    "url": "https://github.com/ayonli/js-magic/issues"
   },
-  "homepage": "https://github.com/hyurl/js-magic#readme",
+  "homepage": "https://github.com/ayonli/js-magic#readme",
   "devDependencies": {
     "@types/node": "^14.14.31",
     "mocha": "^5.2.0"
