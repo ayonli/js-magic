@@ -15,12 +15,12 @@ export interface MagicalClass {
 
 let warnedInvokeDeprecation = false;
 
-export function applyMagic<T extends new (...args: any[]) => any>(ctor: T): T;
+export function applyMagic<T extends new (...args: any[]) => any>(ctor: T, ctx?: object): T;
 export function applyMagic<T extends (...args: any[]) => any>(fn: T, proxyOnly: boolean): T;
 export function applyMagic<T extends object>(obj: T): T;
-export function applyMagic(target: any, proxyOnly = false) {
+export function applyMagic(target: any, ctx: boolean | object = false) {
     if (typeof target == "function") {
-        if (proxyOnly) {
+        if (ctx === true) {
             return proxify(target);
         }
 
@@ -76,7 +76,7 @@ function checkType(
     ctor: Function,
     fn: Function,
     name: string,
-    argLength: number = void 0
+    argLength: number | undefined = void 0
 ) {
     if (fn !== undefined) {
         if (typeof fn != "function") {
