@@ -1,39 +1,44 @@
 {
-  "name": "js-magic",
-  "version": "1.3.0",
-  "description": "JavaScript magic methods support.",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "scripts": {
-    "build": "tsc --module commonjs --target es2015 --sourceMap true --declaration true index.ts",
-    "prepublishOnly": "npm run build",
-    "postpublish": "ls index.* | grep -v index.ts | xargs rm -f",
-    "pretest": "tsc --module commonjs --target es2015 test.ts",
-    "posttest": "rm -f test.js* && ls index.js* | xargs rm -f",
-    "test": "mocha"
-  },
-  "engines": {
-    "node": ">=6"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ayonli/js-magic.git"
-  },
-  "keywords": [
-    "Magic Methods",
-    "getter",
-    "setter"
-  ],
-  "author": "A-yon Lee <the@ayon.li>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ayonli/js-magic/issues"
-  },
-  "homepage": "https://github.com/ayonli/js-magic#readme",
-  "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^14.14.31",
-    "mocha": "^5.2.0",
-    "typescript": "^4.9.5"
-  }
+    "name": "js-magic",
+    "version": "1.4.0",
+    "description": "JavaScript magic methods support.",
+    "main": "cjs/index.js",
+    "module": "esm/index.js",
+    "exports": {
+        "require": "./cjs/index.js",
+        "import": "./esm/index.js"
+    },
+    "scripts": {
+        "build:cjs": "tsc --module commonjs --target es2015 --outDir cjs --sourceMap --strict --noImplicitThis --noImplicitAny --noImplicitReturns index.ts",
+        "build:esm": "tsc --module esnext --target es2015 --outDir esm --sourceMap --strict --noImplicitThis --noImplicitAny --noImplicitReturns index.ts",
+        "build": "npm run build:cjs && npm run build:esm",
+        "prepublishOnly": "npm run build",
+        "test": "mocha -r ts-node/register test.ts",
+        "test:bun": "bun run ./node_modules/mocha/bin/mocha test.ts"
+    },
+    "engines": {
+        "node": ">=6"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ayonli/js-magic.git"
+    },
+    "keywords": [
+        "Magic Methods",
+        "getter",
+        "setter"
+    ],
+    "author": "A-yon Lee <the@ayon.li>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/ayonli/js-magic/issues"
+    },
+    "homepage": "https://github.com/ayonli/js-magic#readme",
+    "devDependencies": {
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^20.6.2",
+        "mocha": "^5.2.0",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.5"
+    }
 }

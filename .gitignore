@@ -1,4 +1,4 @@
-.vscode/settings.json
+.vscode/
 node_modules/
-index.js*
-index.d.ts
+cjs
+*.tgz

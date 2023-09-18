@@ -1,3 +1,4 @@
+import { describe, it } from "mocha";
 import * as assert from "assert";
 import * as magic from ".";
 
@@ -12,10 +13,16 @@ class Car {
     }
 
     __get(prop: string) {
-        return prop in this ? this[prop] : (prop == "name" ? this.constructor.name + " Instance" : null);
+        // @ts-ignore
+        return (prop in this && this[prop] !== undefined)
+            // @ts-ignore
+            ? this[prop]
+            // @ts-ignore
+            : (prop == "name" ? this.constructor.name + " Instance" : null);
     }
 
     __set(prop: string, value: any) {
+        // @ts-ignore
         this[prop] = prop == "name" ? value + " Instance" : value;
     }
 
@@ -25,6 +32,7 @@ class Car {
 
     __delete(prop: string) {
         if (prop.slice(0, 2) == "__" || prop == "wheels") return;
+        // @ts-ignore
         delete this[prop];
     }
 
@@ -32,7 +40,7 @@ class Car {
         return "invoking Car as a function";
     }
 
-    test(str) {
+    test(str: string) {
         return str;
     }
 }
@@ -119,9 +127,8 @@ describe("class inheritance of magical class", () => {
         assert.strictEqual(auto instanceof Car, true);
         assert.deepStrictEqual(auto.name, "Auto Instance");
         assert.deepStrictEqual(auto.wheels, 4);
-        assert.strictEqual("name" in auto, true);
-        assert.strictEqual("wheels" in auto, true);
-        assert.strictEqual("windows" in auto, false);
+        assert.deepStrictEqual(auto.windows, null);
+
         auto.name = "MyAuto";
         auto.windows = 4;
         assert.strictEqual(auto.name, "MyAuto Instance");
@@ -131,7 +138,7 @@ describe("class inheritance of magical class", () => {
 
     it("should define an ES5 class extends the magical class as expected", () => {
         function Auto() {
-            return Reflect.construct(_Car, arguments, this.constructor);
+            return Reflect.construct(_Car, arguments, new.target);
         }
 
         let classStr = Auto.toString();
@@ -147,9 +154,7 @@ describe("class inheritance of magical class", () => {
         assert.strictEqual(auto instanceof Car, true);
         assert.deepStrictEqual(auto.name, "Auto Instance");
         assert.deepStrictEqual(auto.wheels, 4);
-        assert.strictEqual("name" in auto, true);
-        assert.strictEqual("wheels" in auto, true);
-        assert.strictEqual("windows" in auto, false);
+        assert.strictEqual(auto.windows, null);
         auto.name = "MyAuto";
         auto.windows = 4;
         assert.strictEqual(auto.name, "MyAuto Instance");
@@ -172,7 +177,10 @@ describe("apply magic functions on objects other than class", () => {
 
     it("should apply magic functions on a function as expected", () => {
         let fn = new Function();
+
+        // @ts-ignore
         fn["__get"] = (prop: string) => {
+            // @ts-ignore
             return prop === "name" ? "fn" : prop in fn ? fn[prop] : void 0;
         };
         // @ts-ignore

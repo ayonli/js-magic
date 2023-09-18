@@ -1,5 +1,4 @@
 .*
 node_modules/
-package-locak.json
 test.ts
-index.ts
+*.tgz
