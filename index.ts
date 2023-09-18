@@ -25,9 +25,8 @@ export function applyMagic(target: any, ctx: boolean | object = false) {
         }
 
         const PseudoClass = function PseudoClass(this: any, ...args: any[]) {
-            // Must use `new.target` instead of `this`, because in ES Module
-            // system, `this` will reference to the `globalThis` if not provided
-            // by `Function.call()`.
+            // Must use `new.target` instead of `this`, otherwise it won't work
+            // in Bun (may be a bug).
             if (typeof new.target === "undefined") { // function call
                 let invoke = target[__invoke] || target["__invoke"];
 

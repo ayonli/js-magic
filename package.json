@@ -1,6 +1,6 @@
 {
     "name": "js-magic",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "JavaScript magic methods support.",
     "main": "cjs/index.js",
     "module": "esm/index.js",

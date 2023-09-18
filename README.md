@@ -25,8 +25,6 @@ Just import this package directly:
 
 ```ts
 import { applyMagic } from "https://deno.land/x/js_magic/index.ts";
-// Or
-import { applyMagic } from "https://github.com/ayonli/js-magic/raw/master/index.ts";
 ```
 
 ## Example
@@ -103,7 +101,7 @@ decorator support, you can manually call it to generate the wrapping class and
 assign to the old one. Like this:
 
 ```javascript
-const { applyMagic } = require("js-magic");
+import { applyMagic } from "js-magic";
 
 class Car {
     // ...
