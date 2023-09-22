@@ -1,12 +1,14 @@
 {
     "name": "js-magic",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "JavaScript magic methods support.",
     "main": "cjs/index.js",
     "module": "esm/index.js",
+    "types": "index.ts",
     "exports": {
         "require": "./cjs/index.js",
-        "import": "./esm/index.js"
+        "import": "./esm/index.js",
+        "types": "./index.ts"
     },
     "scripts": {
         "build:cjs": "tsc --module commonjs --target es2015 --outDir cjs --sourceMap --strict --noImplicitThis --noImplicitAny --noImplicitReturns index.ts",
